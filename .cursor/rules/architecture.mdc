@@ -1,0 +1,23 @@
+---
+description: "Enforces the core principles of Clean Architecture across all modules."
+alwaysApply: true
+---
+
+# General Clean Architecture Principles
+
+- **Dependency Rule:** Dependencies must always point inwards. Presentation depends on Domain, and Data depends on Domain. The Domain layer must not depend on any other layer.
+- **Module Structure:** Each feature module (e.g., `auth`, `appointment`) must contain three primary directories: `presentation`, `domain`, and `data`.
+
+    ```
+    src/
+    ├── auth/
+    │   ├── data/
+    │   ├── domain/
+    │   └── presentation/
+    └── appointment/
+        ├── data/
+        ├── domain/
+        └── presentation/
+    ```
+
+- **File Naming:** Use snake_case for file names. For example, `use_case_name.dart`, `auth_repository.dart`.

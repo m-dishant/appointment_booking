@@ -1,0 +1,127 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flutter Best Practices and Cursor Rules
+
+## 📐 Architecture & Project Structure
+
+- **Clean Architecture Principle:**
+  - Use feature-based folder structure.
+  - Maintain a separation of concerns using `presentation`, `domain`, and `data` layers.
+  - Dependencies must always point inwards (Presentation → Domain → Data).
+
+    ```
+    lib/
+    ├── auth/
+    │   ├── data/
+    │   ├── domain/
+    │   └── presentation/
+    ├── core/
+    │   ├── utils/
+    │   ├── widgets/
+    │   └── constants/
+    └── main.dart
+    ```
+
+- **File Naming Convention:**
+  - Use `snake_case` for all file names.
+  - Example: `auth_repository.dart`, `login_screen.dart`, `get_user_use_case.dart`.
+
+---
+
+## 🌐 Networking
+
+- **Use Dio for all API calls.**
+  - Enables interceptors, logging, and better error handling.
+  - Configure base options globally.
+  
+- **Interceptor Setup:**
+  - Implement interceptors for:
+    - Request/Response logging
+    - Handling errors
+    - Attaching access tokens
+    - Refreshing tokens automatically
+
+- **Token Refresh Flow:**
+  - On 401 errors:
+    - Lock queue
+    - Attempt to refresh access token using refresh token
+    - Retry failed requests
+    - Unlock queue
+
+- **API Logging:**
+  - Log request method, endpoint, headers, payload, and response (excluding sensitive info).
+  - Use `PrettyDioLogger` or a custom logger.
+  - Always disable detailed logging in production builds.
+
+---
+
+## 🔐 Secure Storage
+
+- **Use `flutter_secure_storage` or `secure_shared_preferences` for sensitive data.**
+  - Store access token, refresh token, and user credentials securely.
+  - Never store secrets in plain-text SharedPreferences.
+
+- **Do not hardcode secrets** like API keys directly in the codebase.
+  - Use `.env` or platform-specific secure key storage.
+
+---
+
+## 🖼️ Image Caching
+
+- **Use `cached_network_image` for remote images.**
+  - Reduces repeated downloads.
+  - Shows placeholders and error widgets.
+  
+    ```dart
+    CachedNetworkImage(
+      imageUrl: user.avatarUrl,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+    )
+    ```
+
+---
+
+## 🔄 State Management
+
+- **Use `provider` for scalable and testable state management.**
+  - Keep logic in `ChangeNotifier` or custom classes.
+  - Avoid placing business logic in UI components.
+  
+- **Separation of Concerns:**
+  - UI → Consumer/Selector
+  - ViewModel → Notifier logic
+  - Service/Repository → Data fetching
+
+---
+
+## 🧪 Testing
+
+- **Write unit tests** for use cases and business logic.
+- **Write widget tests** for UI components.
+- **Mock network calls** using `mockito` or `mocktail`.
+
+---
+
+## 💡 General Flutter Best Practices
+
+- **Null Safety:** Ensure all code is null-safe.
+- **Avoid using `BuildContext` inside async gaps.**
+- **Minimize use of global variables.**
+- **Use custom widgets to extract repeatable UI components.**
+- **Avoid deep widget nesting. Use functions or widgets to break complexity.**
+
+---
+
+## 🔄 Async & Error Handling
+
+- **Always handle errors in async functions.**
+  ```dart
+  try {
+    final response = await dio.get('/user');
+  } catch (e) {
+    // Handle network error
+  }

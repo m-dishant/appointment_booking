@@ -1,0 +1,37 @@
+---
+description: "Rules for the Data layer of any module."
+globs:
+  - "**/data/**"
+---
+
+# Data Layer
+
+The data layer is responsible for all data operations, including interacting with databases, network APIs, or local storage.
+
+## Subdirectories
+
+- **`datasources`**: Contains the concrete implementations of data sources (e.g., a remote API client, a local database handler).
+- **`repositories`**: Implements the repository interfaces defined in the domain layer.
+
+## Example Structure for `auth/data`
+
+```auth/
+└── data/
+├── datasources/
+│   ├── auth_remote_data_source.dart
+│   └── auth_local_data_source.dart
+└── repositories/
+└── auth_repository_impl.dart
+```
+
+
+## Data Sources
+
+- A data source should be responsible for a single source of data (e.g., a specific API endpoint).
+- It handles the raw data and may perform serialization/deserialization.
+
+## Repository Implementations
+
+- The `repository_impl` class implements the corresponding repository interface from the domain layer.
+- It uses one or more data sources to fulfill the contract of the interface.
+- It is responsible for mapping data from data sources to domain entities.

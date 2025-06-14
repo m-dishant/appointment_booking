@@ -1,0 +1,38 @@
+---
+description: "Rules for the Domain layer of any module."
+globs:
+  - "**/domain/**"
+---
+
+# Domain Layer
+
+The domain layer contains the core business logic and is independent of any UI or database technology.
+
+## Subdirectories
+
+- **`entities`**: Contains the core business objects. These should be simple classes with attributes and no framework-specific code.
+- **`repositories`**: Defines the interfaces for data operations. These are abstract contracts to be implemented by the data layer.
+- **`use_cases`**: Contains the application-specific business rules. Each use case should be a single class with a single public method (e.g., `execute()`).
+
+## Example Structure for `auth/domain`
+```
+auth/
+└── domain/
+├── entities/
+│   └── user.dart
+├── repositories/
+│   └── auth_repository.dart
+└── use_cases/
+├── login_user.dart
+└── register_user.dart
+```
+## Use Cases
+
+- Each use case should have a single responsibility.
+- They orchestrate the flow of data between entities and repositories.
+- They should not be aware of the specifics of the UI or data sources.
+
+## Repositories
+
+- Define abstract methods for data operations (e.g., `get_user`, `create_appointment`).
+- Do not include any implementation details.

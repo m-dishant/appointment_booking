@@ -1,0 +1,32 @@
+---
+description: "Rules for the Presentation layer of any module."
+globs:
+  - "**/presentation/**"
+---
+
+# Presentation Layer
+
+The presentation layer is responsible for everything related to the user interface.
+
+## Subdirectories
+
+- **`view`**: Contains the UI components (e.g., screens, widgets, pages).
+- **`viewmodel`** or **`bloc`** or **`controller`**: Contains the presentation logic that interacts with the domain layer's use cases. This part of the presentation layer drives the UI.
+
+## Example Structure for `auth/presentation`
+```
+auth/
+└── presentation/
+├── view/
+│   ├── login_screen.dart
+│   └── register_screen.dart
+└── viewmodel/
+└── auth_viewmodel.dart
+```
+
+## ViewModels / BLoCs / Controllers
+
+- They should call use cases from the domain layer to perform business operations.
+- They expose state and events to the UI.
+- They should not contain any business logic directly.
+- They format data from the domain layer in a way that is easily consumable by the UI.
